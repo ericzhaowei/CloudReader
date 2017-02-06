@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="C:\Users\ider-eric\GitProject\CloudReader\weiboSDK\assets"/><source path="C:\Users\ider-eric\GitProject\CloudReader\weiboSDK\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="C:\Users\ider-eric\GitProject\CloudReader\weiboSDK\build-types\debug\assets"/></dataSet></merger>

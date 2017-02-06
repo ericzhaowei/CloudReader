@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/nav_message"
+        android:icon="@drawable/menu_message"/>
+    <item
+        android:title="@string/nav_vip"
+        android:icon="@drawable/menu_vip"/>
+    <item
+        android:title="@string/nav_store"
+        android:icon="@drawable/menu_store"/>
+    <item
+        android:title="@string/nav_freemusic_online"
+        android:icon="@drawable/menu_freemusic_online"/>
+    <item
+        android:title="@string/nav_checkmusic"
+        android:icon="@drawable/menu_checkmusic"/>
+    <item
+        android:title="@string/nav_theme"
+        android:icon="@drawable/menu_theme"/>
+    <item
+        android:title="@string/nav_night"
+        android:icon="@drawable/menu_night"/>
+
+
+
+
+</menu>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:background="@drawable/navigation_head_bg">
+
+    <LinearLayout
+        android:id="@+id/header_login_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center_horizontal"
+            android:text="@string/nav_header_login_tip"
+            android:textColor="@color/white"
+            android:textSize="13.5sp" />
+
+        <Button
+            android:id="@+id/nav_header_login"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/nav_header_login_button_bg"
+            android:text="@string/nav_header_login"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/header_user_layer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/usericon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
+
+</FrameLayout>
