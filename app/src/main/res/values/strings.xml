@@ -15,13 +15,20 @@
     <string name="nav_car">驾驶模式</string>
     <string name="nav_setup">设置</string>
     <string name="nav_exit">退出应用</string>
-    
+
+    <string name="my_weibo_login">使用微博账号登录</string>
+    <string name="my_header_description">简介：%s</string>
+    <string name="my_header_nodescription">暂无介绍</string>
     <string name="my_friends_count">关注数</string>
     <string name="my_statues_count">微博数</string>
     <string name="my_fans_count">粉丝数</string>
 
-    <string-array name="my_function_list">
-        <item>\@我的</item>
-        <item>设置</item>
-    </string-array>
+    <string name="user_function_message_at">\@我的微博</string>
+    <string name="user_function_message_comments">我的点评</string>
+    <string name="user_function_message_fabulous">我的赞</string>
+    <string name="user_function_ariticle">我的文章</string>
+    <string name="user_function_collection">我的收藏</string>
+    <string name="user_function_more">更多</string>
+    <string name="user_function_setting">设置</string>
+
 </resources>

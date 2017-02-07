@@ -13,16 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
+
 import com.ider.cloudreader.R;
-import com.ider.cloudreader.fragment.MainFragmentDiscovery;
-import com.ider.cloudreader.fragment.MainFragmentMusic;
-import com.ider.cloudreader.fragment.MainFragmentMy;
-import com.ider.cloudreader.fragment.MainFragmentUser;
 import com.ider.cloudreader.navigation.NavigationAdapter;
 import com.ider.cloudreader.toolbar.MainTabHolder;
 import com.ider.cloudreader.toolbar.OnTabItemClickListener;
-import com.ider.cloudreader.weibo.ILoginView;
-import com.ider.cloudreader.weibo.LoginPresenter;
+import com.ider.cloudreader.weibo.user.LoginPresenter;
 import com.sina.weibo.sdk.openapi.models.User;
 
 import java.util.ArrayList;
@@ -36,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     private NavigationAdapter navigationAdapter;
     private MainFragmentDiscovery fragmentDiscovery;
     private MainFragmentMusic fragmentMusic;
-    private MainFragmentMy fragmentMy;
     private MainFragmentUser fragmentUser;
     private LoginPresenter loginPresenter;
 
@@ -79,6 +75,15 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
                 }
             }
         });
+
+        ImageView newStatues = (ImageView) toolbar.findViewById(R.id.actionbar_new_statues);
+        newStatues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     private void setupNavigationView() {
@@ -101,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     private void initFragment() {
         fragmentDiscovery = new MainFragmentDiscovery();
         fragmentMusic = new MainFragmentMusic();
-        fragmentMy = new MainFragmentMy();
         fragmentUser = new MainFragmentUser();
         ArrayList<Fragment> fragments = new ArrayList<>(3);
         fragments.add(fragmentDiscovery);
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     @Override
     public void showUser(User user) {
         navigationAdapter.showUser(user);
-        fragmentMy.showUser(user);
+        fragmentUser.showUser(user);
     }
 
 

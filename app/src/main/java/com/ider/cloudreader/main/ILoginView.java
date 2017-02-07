@@ -1,4 +1,4 @@
-package com.ider.cloudreader.weibo;
+package com.ider.cloudreader.main;
 
 import android.app.Activity;
 

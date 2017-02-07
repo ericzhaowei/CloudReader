@@ -1,4 +1,4 @@
-package com.ider.cloudreader.fragment;
+package com.ider.cloudreader.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,12 +13,13 @@ import com.ider.cloudreader.R;
  * Created by ider-eric on 2017/1/12.
  */
 
-public class MainFragmentDiscovery extends Fragment {
+public class MainFragmentMusic extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.mainfragment_discovery, container, false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.mainfragment_music, container, false);
         return view;
+
     }
 }

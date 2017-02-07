@@ -1,4 +1,4 @@
-package com.ider.cloudreader.weibo;
+package com.ider.cloudreader.weibo.user;
 
 import android.content.Context;
 import android.content.SharedPreferences;

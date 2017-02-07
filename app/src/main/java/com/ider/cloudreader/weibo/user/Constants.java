@@ -1,4 +1,4 @@
-package com.ider.cloudreader.weibo;
+package com.ider.cloudreader.weibo.user;
 
 /**
  * Created by ider-eric on 2017/1/18.

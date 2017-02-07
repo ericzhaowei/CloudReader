@@ -18,12 +18,13 @@
             android:layout_gravity="center" />
 
         <ImageView
-            android:id="@+id/actionbar_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/actionbar_new_statues"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/actionbar_search" />
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/navigationbar_compose_white" />
 
     </android.support.v7.widget.Toolbar>
 
