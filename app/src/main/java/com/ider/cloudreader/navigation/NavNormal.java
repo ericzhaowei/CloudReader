@@ -11,6 +11,7 @@ class NavNormal implements NavItem {
 
     private int icon;
     private int title;
+    /* 此变量标记一个位于最右边的子view,可能是textview或者是switchview */
     private Object obj;
 
 

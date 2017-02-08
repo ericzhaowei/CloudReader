@@ -3,6 +3,8 @@ package com.ider.cloudreader.main;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.common.RegularExpression;
 import com.ider.cloudreader.views.CircleHeader;
 import com.sina.weibo.sdk.openapi.models.Status;
 
@@ -21,7 +24,8 @@ import java.util.ArrayList;
  */
 
 public class StatusAdapter extends RecyclerView.Adapter {
-
+    private static final String TAG = "StatusAdapter";
+    
     private ArrayList<Status> statusList;
     private Context context;
 
@@ -56,8 +60,8 @@ public class StatusAdapter extends RecyclerView.Adapter {
     }
 
     class StatusHolder extends RecyclerView.ViewHolder {
-
         private CircleHeader userIcon;
+
         private TextView userName;
         private TextView subTitle;
         private TextView content;
@@ -75,7 +79,8 @@ public class StatusAdapter extends RecyclerView.Adapter {
             Glide.with(context).load(status.user.avatar_large).into(this.userIcon);
             this.userName.setText(status.user.name);
             this.subTitle.setText(status.created_at);
-            this.content.setText(status.text);
+            this.content.setText(RegularExpression.checkText(context, status.text));
+            this.content.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
 

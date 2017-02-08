@@ -2,6 +2,7 @@ package com.ider.cloudreader.navigation;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
 import com.sina.weibo.sdk.openapi.models.User;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class NavigationAdapter extends RecyclerView.Adapter implements View.OnClickListener{
+public class NavigationAdapter extends RecyclerView.Adapter implements View.OnClickListener {
     private static final String TAG = "NavigationAdapter";
 
     private static final int NAV_TYPE_HEADER = 0;
@@ -46,7 +49,7 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
     @Override
     public int getItemViewType(int position) {
         NavItem item = dataList.get(position);
-        if(item instanceof NavHeader) {
+        if (item instanceof NavHeader) {
             return NAV_TYPE_HEADER;
         } else if (item instanceof NavNormal) {
             return NAV_TYPE_NORMAL;
@@ -59,6 +62,7 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.i(TAG, "onCreateViewHolder: ");
         RecyclerView.ViewHolder holder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
@@ -82,6 +86,7 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.i(TAG, "onBindViewHolder: " + position);
         NavItem item = dataList.get(position);
         if (item instanceof NavNormal) {
             bindNormalViewHolder((NormalViewHolder) holder, (NavNormal) item);
@@ -107,11 +112,12 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
         private TextView text;
         private View itemView;
         private int childCount;
+
         NormalViewHolder(View itemView) {
             super(itemView);
             this.icon = (ImageView) itemView.findViewById(R.id.nav_normal_icon);
             this.text = (TextView) itemView.findViewById(R.id.nav_normal_text);
-            if(itemView instanceof ViewGroup) {
+            if (itemView instanceof ViewGroup) {
                 this.childCount = ((ViewGroup) itemView).getChildCount();
             }
             this.itemView = itemView;
@@ -133,20 +139,20 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
         holder.text.setText(item.getTitleRes());
 
         LinearLayout root = (LinearLayout) holder.getView();
-        if(item.getObj() == null) {
-            // 防止recycleview重复使用item导致某些不需要subview的item被加上了subview
-            if(root.getChildCount() > holder.childCount) {
-                for(int i = holder.childCount; i < root.getChildCount(); i++) {
-                    root.removeViewAt(i);
-                }
+        // 每次bind时，清空item.obj代表的subView,并重新添加，防止重复
+        if (root.getChildCount() > holder.childCount) {
+            for (int i = holder.childCount; i < root.getChildCount(); i++) {
+                root.removeViewAt(i);
             }
+        }
 
+        if (item.getObj() == null) {
             return;
         }
 
-        if(item.getObj() instanceof String) {
+        if (item.getObj() instanceof String) {
             addNavSubTitle(root, item.getObj().toString());
-        } else if(item.getObj() instanceof Boolean) {
+        } else if (item.getObj() instanceof Boolean) {
             addSwitchButton(root, (Boolean) item.getObj());
         }
     }
@@ -178,14 +184,14 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
 
     private void bindHeaderViewHolder(HeaderViewHolder holder, NavHeader header) {
         User user = header.getUser();
-        if(user != null) {
+        if (user != null) {
             View view = holder.itemView;
             view.findViewById(R.id.header_login_layer).setVisibility(View.GONE);
             LinearLayout headerUser = (LinearLayout) view.findViewById(R.id.header_user_layer);
             headerUser.setVisibility(View.VISIBLE);
             ImageView userIcon = (ImageView) headerUser.findViewById(R.id.usericon);
             TextView username = (TextView) headerUser.findViewById(R.id.username);
-            if(user.name != null) {
+            if (user.name != null) {
                 username.setText(user.name);
             }
             Glide.with(view.getContext()).load(user.avatar_large).into(userIcon);
@@ -206,7 +212,7 @@ public class NavigationAdapter extends RecyclerView.Adapter implements View.OnCl
     }
 
     public void showUser(User user) {
-        if(dataList.get(0) instanceof NavHeader) {
+        if (dataList.get(0) instanceof NavHeader) {
             NavHeader header = (NavHeader) dataList.get(0);
             header.setUser(user);
             this.notifyDataSetChanged();
