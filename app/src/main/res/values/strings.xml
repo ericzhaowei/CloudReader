@@ -16,6 +16,8 @@
     <string name="nav_setup">设置</string>
     <string name="nav_exit">退出应用</string>
 
+    <string name="status_source">%1$s\t\t来自%2$s</string>
+
     <string name="my_weibo_login">使用微博账号登录</string>
     <string name="my_header_description">简介：%s</string>
     <string name="my_header_nodescription">暂无介绍</string>
@@ -30,5 +32,6 @@
     <string name="user_function_collection">我的收藏</string>
     <string name="user_function_more">更多</string>
     <string name="user_function_setting">设置</string>
+
 
 </resources>

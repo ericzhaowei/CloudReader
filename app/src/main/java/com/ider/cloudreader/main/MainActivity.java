@@ -20,6 +20,7 @@ import com.ider.cloudreader.navigation.NavigationAdapter;
 import com.ider.cloudreader.toolbar.MainTabHolder;
 import com.ider.cloudreader.toolbar.OnTabItemClickListener;
 import com.ider.cloudreader.weibo.user.LoginPresenter;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.openapi.models.User;
 
 import java.util.ArrayList;
@@ -148,9 +149,10 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
 
 
     @Override
-    public void showUser(User user) {
+    public void showUser(User user, Oauth2AccessToken accessToken) {
         navigationAdapter.showUser(user);
         fragmentUser.showUser(user);
+        fragmentDiscovery.refreshStatues(accessToken);
     }
 
 

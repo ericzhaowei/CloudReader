@@ -29,14 +29,25 @@ public class StatusPresenter {
     private StatusesAPI mStatuesApi;
 
     private IStatusView iStatusView;
+
     public StatusPresenter(Context context, IStatusView iStatusView) {
         this.context = context;
         this.iStatusView = iStatusView;
-        mAccessToken = AccessTokenKeeper.readAccessToken(context);
-        mStatuesApi = new StatusesAPI(context, Constants.APP_KEY, mAccessToken);
+
     }
 
-    public void requestLatestStatues() {
+    /**
+     * 刷新微博数据
+     *
+     * @param accessToken 为null时，读取本地accessToken
+     */
+    public void requestLatestStatues(Oauth2AccessToken accessToken) {
+        if (accessToken != null && accessToken.isSessionValid()) {
+            this.mAccessToken = accessToken;
+        } else {
+            mAccessToken = AccessTokenKeeper.readAccessToken(context);
+        }
+        mStatuesApi = new StatusesAPI(context, Constants.APP_KEY, mAccessToken);
         mStatuesApi.friendsTimeline(0L, 0L, 10, 1, false, 0, false, mListener);
     }
 
@@ -51,7 +62,7 @@ public class StatusPresenter {
 
         @Override
         public void onWeiboException(WeiboException e) {
-
+            Log.i(TAG, "onWeiboException: " + e.getMessage());
         }
     };
 

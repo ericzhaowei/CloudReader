@@ -26,9 +26,10 @@ public class RegularExpression {
     private static String AT = "@[\\u4e00-\\u9fa5\\w]+";
     private static String TOPIC = "#[\\u4e00-\\u9fa5\\w]+#";
     private static String EMOJI = "\\[[\\u4e00-\\u9fa5\\w]+\\]";
-    private static String URL = "[a-zA-Z]+://([\\w-]+\\.)+([\\w./-?%&=]*)?";
+    private static String URL = "http://([\\w-]+\\.)+([\\w./-?%&=]*)?";
 
-    private static int highlightColor = 0xff005fbd;
+
+    private static int highlightColor = 0xFF2A86E2;
 
     private static String REGEX = String.format("(%s)|(%s)|(%s)|(%s)", AT, TOPIC, EMOJI, URL);
 
@@ -84,5 +85,17 @@ public class RegularExpression {
         }
     }
 
+
+
+    public static String getStatusSource(String string) {
+        String regex = ">[\\w\\W]+<";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(string);
+        if(matcher.find()) {
+            String group = matcher.group();
+            return group.substring(1, group.length() -1);
+        }
+        return string;
+    }
 
 }

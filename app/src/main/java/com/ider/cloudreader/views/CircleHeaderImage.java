@@ -15,7 +15,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by ider-eric on 2017/2/7.
  */
 
-public class CircleHeader extends CircleImageView {
+public class CircleHeaderImage extends CircleImageView {
 
     private static final String TAG = "CircleHeader";
 
@@ -47,11 +47,11 @@ public class CircleHeader extends CircleImageView {
     private Timer timer;
     private TimerTask task;
 
-    public CircleHeader(Context context) {
+    public CircleHeaderImage(Context context) {
         this(context, null);
     }
 
-    public CircleHeader(Context context, AttributeSet attrs) {
+    public CircleHeaderImage(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

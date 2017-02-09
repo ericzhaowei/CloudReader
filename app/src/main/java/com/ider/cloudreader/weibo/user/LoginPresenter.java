@@ -60,10 +60,8 @@ public class LoginPresenter {
     // 检测本地保存user信息
     private boolean checkExistUser() {
         User user = UserKeeper.readUser(activity);
-        Log.i(TAG, "checkExistUser: ");
         if(!user.name.isEmpty()) {
-
-            ((ILoginView) activity).showUser(user);
+            ((ILoginView) activity).showUser(user, mAccessToken);
             return true;
         }
         return false;
@@ -119,7 +117,7 @@ public class LoginPresenter {
             User user = User.parse(response);
             if (user != null) {
                 UserKeeper.writeUser(activity, user);
-                ((ILoginView) activity).showUser(user);
+                ((ILoginView) activity).showUser(user, mAccessToken);
             }
         }
 

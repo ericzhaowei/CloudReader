@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.ider.cloudreader.R;
 import com.ider.cloudreader.weibo.statues.StatusPresenter;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.openapi.models.Status;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView {
             welcomeImage = (ImageView) rootView.findViewById(R.id.discovery_welcome);
             contentView = (RecyclerView) rootView.findViewById(R.id.discovery_content);
             setupRecyclerView();
-            refreshStatues();
+            refreshStatues(null);
         }
         return rootView;
     }
@@ -60,9 +61,9 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView {
         contentView.setAdapter(adapter);
     }
 
-    public void refreshStatues() {
+    public void refreshStatues(Oauth2AccessToken accessToken) {
         if(presenter != null) {
-            presenter.requestLatestStatues();
+            presenter.requestLatestStatues(accessToken);
         }
     }
 

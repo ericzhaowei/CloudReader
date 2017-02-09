@@ -2,6 +2,7 @@ package com.ider.cloudreader.main;
 
 import android.app.Activity;
 
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.openapi.models.User;
 
 /**
@@ -10,6 +11,6 @@ import com.sina.weibo.sdk.openapi.models.User;
 
 public interface ILoginView {
 
-    void showUser(User user);
+    void showUser(User user, Oauth2AccessToken accessToken);
 
 }

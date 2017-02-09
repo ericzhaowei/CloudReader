@@ -59,7 +59,7 @@ public class Status {
     /** 原始图片地址（原图），没有时不返回此字段 */
     public String original_pic;
     /** 地理信息字段 */
-    public Geo geo;
+    public Geo geo ;
     /** 微博作者的用户信息字段 */
     public User user;
     /** 被转发的原微博信息字段，当该微博为转发微博时返回 */

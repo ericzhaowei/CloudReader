@@ -6,4 +6,9 @@
         <attr name="ballRadius" format="dimension"/>
         <attr name="enabled" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="StatusCommentContentView">
+        <attr name="status_type_count_image" format="reference" />
+        <attr name="status_type_count_imageAnim" format="boolean"/>
+    </declare-styleable>
 </resources>
