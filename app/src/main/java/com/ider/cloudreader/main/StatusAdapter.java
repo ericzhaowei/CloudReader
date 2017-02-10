@@ -1,6 +1,7 @@
 package com.ider.cloudreader.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -114,7 +115,8 @@ public class StatusAdapter extends RecyclerView.Adapter {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.status_item_like_count:
-
+                    Intent intent = new Intent(context, ShareActivity.class);
+                    context.startActivity(intent);
                     break;
             }
         }
