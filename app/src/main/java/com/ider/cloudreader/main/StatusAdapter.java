@@ -108,14 +108,17 @@ public class StatusAdapter extends RecyclerView.Adapter {
         }
 
         public void setListener() {
+            this.shareDetail.setOnClickListener(this);
+            this.commentDetail.setOnClickListener(this);
             this.likeDetail.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.status_item_like_count:
-                    Intent intent = new Intent(context, ShareActivity.class);
+                case R.id.status_item_comment_count:
+                    Intent intent = new Intent(context, ShareCommentActivity.class);
+                    intent.putExtra(ShareCommentActivity.TYPE_KEY, ShareCommentActivity.TYPE_COMMENT);
                     context.startActivity(intent);
                     break;
             }

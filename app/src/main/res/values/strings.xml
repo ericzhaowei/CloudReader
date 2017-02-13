@@ -33,5 +33,11 @@
     <string name="user_function_more">更多</string>
     <string name="user_function_setting">设置</string>
 
+    <string name="share_comment_editor_cancel">取消</string>
+    <string name="share_comment_editor_send">发送</string>
+    <string name="editor_type_comment">评论微博</string>
+    <string name="editor_type_share">转发微博</string>
+    <string name="editor_hint">写评论…</string>
 
+    <string name="contacts_title">联系人</string>
 </resources>

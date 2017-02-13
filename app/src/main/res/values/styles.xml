@@ -5,6 +5,11 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="BaseStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@android:color/white</item>
+    </style>
+
     <style name="MenuTextStyle">
         <item name="android:textSize">15sp</item>
     </style>

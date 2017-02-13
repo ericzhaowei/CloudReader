@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.ShareActivity"/>
+        <activity android:name=".main.ShareCommentActivity"
+            android:theme="@style/BaseStyle"/>
+        <activity android:name=".main.ContactsActivity"
+            android:theme="@style/BaseStyle"/>
     </application>
 
 </manifest>

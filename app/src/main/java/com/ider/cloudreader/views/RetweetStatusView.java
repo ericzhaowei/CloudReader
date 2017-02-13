@@ -31,6 +31,7 @@ public class RetweetStatusView extends ConstraintLayout {
 
     public RetweetStatusView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if(isInEditMode()) return;
         LayoutInflater.from(context).inflate(R.layout.retweeted_status_layout, this);
         content = (TextView) findViewById(R.id.retweet_status_content);
         imageGrid = (ImageGridView) findViewById(R.id.retweet_status_image_grid);

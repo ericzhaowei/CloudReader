@@ -28,6 +28,7 @@ public class ArticalDetailView extends LinearLayout{
 
     public ArticalDetailView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        if(isInEditMode()) return;
         LayoutInflater.from(context).inflate(R.layout.artical_detail_layout, this);
         iconView = (ImageView) findViewById(R.id.status_count_type_icon);
         countView = (TextView) findViewById(R.id.status_count_type_text);
