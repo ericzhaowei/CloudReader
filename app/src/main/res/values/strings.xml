@@ -25,6 +25,10 @@
     <string name="my_statues_count">微博数</string>
     <string name="my_fans_count">粉丝数</string>
 
+    <string name="status_repost">转发</string>
+    <string name="status_comment">评论</string>
+    <string name="status_like">赞</string>
+
     <string name="user_function_message_at">\@我的微博</string>
     <string name="user_function_message_comments">我的点评</string>
     <string name="user_function_message_fabulous">我的赞</string>
@@ -38,6 +42,7 @@
     <string name="editor_type_comment">评论微博</string>
     <string name="editor_type_share">转发微博</string>
     <string name="editor_hint">写评论…</string>
+    <string name="comment_content_tolong">字数不能超过140个</string>
 
     <string name="contacts_title">联系人</string>
 </resources>

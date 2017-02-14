@@ -23,6 +23,12 @@ import com.ider.cloudreader.weibo.user.LoginPresenter;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.openapi.models.User;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener, ILoginView {
@@ -173,4 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
         super.onActivityResult(requestCode, resultCode, data);
         loginPresenter.onAuthorizeCallback(requestCode, resultCode, data);
     }
+
+
+
 }

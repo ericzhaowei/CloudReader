@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/blank">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/retweet_status_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textColor="@android:color/black"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/reweeted_status_content_color"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintHorizontal_bias="0.4"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.ider.cloudreader.views.ImageGridView

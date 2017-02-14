@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+
+    <ImageView
+        android:id="@+id/comment_item_user_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/comment_item_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        tools:layout_editor_absoluteY="32dp"
+        tools:layout_editor_absoluteX="92dp" />
+
+    <TextView
+        android:id="@+id/comment_item_user_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/comment_item_user_name"
+        app:layout_constraintLeft_toLeftOf="@+id/comment_item_user_name"
+        android:layout_marginTop="3dp" />
+
+    <TextView
+        android:id="@+id/comment_item_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/comment_item_user_icon"
+        app:layout_constraintLeft_toLeftOf="@+id/comment_item_user_name"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/comment_item_comment"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/artical_detail_icon_comment"/>
+
+    <ImageView
+        android:id="@+id/comment_item_like"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintRight_toLeftOf="@+id/comment_item_comment"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="@+id/comment_item_comment"
+        android:src="@drawable/artical_detail_icon_like"/>
+</android.support.constraint.ConstraintLayout>

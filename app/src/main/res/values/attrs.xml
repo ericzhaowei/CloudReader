@@ -10,5 +10,7 @@
     <declare-styleable name="StatusCommentContentView">
         <attr name="status_type_count_image" format="reference" />
         <attr name="status_type_count_imageAnim" format="boolean"/>
+        <attr name="status_type" format="integer"/>
     </declare-styleable>
+
 </resources>

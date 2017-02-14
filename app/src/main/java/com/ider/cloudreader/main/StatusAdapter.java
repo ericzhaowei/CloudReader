@@ -96,6 +96,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
             this.subTitle.setText(String.format(context.getString(R.string.status_source), interval, statusSource));
             this.content.setText(RegularExpression.checkText(context, status.text));
             this.content.setMovementMethod(LinkMovementMethod.getInstance());
+
             this.commentDetail.setCount(status.comments_count);
             this.shareDetail.setCount(status.reposts_count);
             this.likeDetail.setCount(status.attitudes_count);
@@ -119,6 +120,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
                 case R.id.status_item_comment_count:
                     Intent intent = new Intent(context, ShareCommentActivity.class);
                     intent.putExtra(ShareCommentActivity.TYPE_KEY, ShareCommentActivity.TYPE_COMMENT);
+                    intent.putExtra(ShareCommentActivity.STATUS_ID_KEY, status.id);
                     context.startActivity(intent);
                     break;
             }
