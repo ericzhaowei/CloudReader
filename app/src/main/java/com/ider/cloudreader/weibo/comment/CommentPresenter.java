@@ -14,6 +14,9 @@ import com.sina.weibo.sdk.net.RequestListener;
 import com.sina.weibo.sdk.net.WeiboParameters;
 import com.sina.weibo.sdk.openapi.models.Comment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -35,7 +38,7 @@ public class CommentPresenter {
     }
 
     public void commitComment(String comment, String statusId) {
-
+        commentView.committing();
         Oauth2AccessToken accessToken = AccessTokenKeeper.readAccessToken(context);
         WeiboParameters parameters = new WeiboParameters(Constants.APP_KEY);
 
@@ -58,11 +61,19 @@ public class CommentPresenter {
         @Override
         public void onComplete(String s) {
             Log.i(TAG, "onComplete: " + s);
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                Comment comment = Comment.parse(jsonObject);
+                commentView.commentSuccess(comment);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
 
         @Override
         public void onWeiboException(WeiboException e) {
-            Log.i(TAG, "onWeiboException: " + e.getMessage());
+            commentView.commentFailed(e.getMessage());
         }
     };
 

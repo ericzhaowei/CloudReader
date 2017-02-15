@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ider.cloudreader.R;
 import com.ider.cloudreader.main.ParcelableStatus;
 import com.ider.cloudreader.weibo.comment.CommentPresenter;
 import com.sina.weibo.sdk.openapi.models.Comment;
+import com.sina.weibo.sdk.openapi.models.CommentList;
 import com.sina.weibo.sdk.openapi.models.Status;
 
 import java.util.ArrayList;
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 
 public class CommentFragment extends Fragment implements ICommentView {
 
+
+
     private static final String TAG = "CommentFragment";
 
     private ImageView vLoading;
@@ -36,6 +40,16 @@ public class CommentFragment extends Fragment implements ICommentView {
     private RecyclerView vComments;
     private CommentPresenter presenter;
     private Status status;
+    private CommentListener commentListener;
+
+
+    public interface CommentListener {
+        void onCommentSuccess();
+    }
+
+    public void setCommentListener(CommentListener commentListener) {
+        this.commentListener = commentListener;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,9 +87,11 @@ public class CommentFragment extends Fragment implements ICommentView {
         presenter.getComments(status.id);
     }
 
-    public CommentFragment() {
-        super();
+
+    public void commitComment(String text) {
+        presenter.commitComment(text, status.id);
     }
+
 
     @Override
     public void requestFailed(String message) {
@@ -94,20 +110,24 @@ public class CommentFragment extends Fragment implements ICommentView {
             this.comments.addAll(comments);
             this.adapter.notifyDataSetChanged();
         }
+        commentListener.onCommentSuccess();
     }
 
     @Override
     public void commentFailed(String message) {
-
+        vLoading.setVisibility(View.GONE);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void commentSuccess(String comment) {
-
+    public void commentSuccess(Comment comment) {
+        comments.add(0, comment);
+        adapter.notifyDataSetChanged();
+        vLoading.setVisibility(View.GONE);
     }
 
     @Override
     public void committing() {
-
+        vLoading.setVisibility(View.VISIBLE);
     }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public interface ICommentView {
 
     void committing();
-    void commentSuccess(String comment);
+    void commentSuccess(Comment comment);
     void commentFailed(String message);
     Context getContext();
 

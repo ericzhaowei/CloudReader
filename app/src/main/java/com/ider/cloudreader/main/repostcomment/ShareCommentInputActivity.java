@@ -1,6 +1,7 @@
 package com.ider.cloudreader.main.repostcomment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 import com.ider.cloudreader.R;
 import com.ider.cloudreader.views.EditorTopBar;
 import com.ider.cloudreader.weibo.comment.CommentPresenter;
+import com.sina.weibo.sdk.openapi.models.Comment;
+
+import java.util.ArrayList;
 
 public class ShareCommentInputActivity extends Activity implements View.OnClickListener {
 
@@ -30,7 +34,6 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
     private TextView vSend;
 
 
-    private CommentPresenter commentPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +102,10 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
                 if(text.length() > 140) {
                     Toast.makeText(ShareCommentInputActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
                 } else {
-                    commentPresenter.commitComment(text, statusId);
+                    Intent intent = new Intent();
+                    intent.putExtra("text", text);
+                    setResult(100, intent);
+                    ShareCommentInputActivity.this.finish();
                 }
             }
         });

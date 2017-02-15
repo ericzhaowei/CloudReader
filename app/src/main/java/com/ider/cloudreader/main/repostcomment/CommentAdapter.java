@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.common.DateFormatter;
 import com.ider.cloudreader.common.RegularExpression;
 import com.ider.cloudreader.views.CircleHeaderImage;
 import com.sina.weibo.sdk.openapi.models.Comment;
@@ -79,7 +80,7 @@ public class CommentAdapter extends RecyclerView.Adapter{
                 userName.setTextColor(Color.BLACK);
                 userIcon.setVerified(false);
             }
-            subTitle.setText(comment.created_at);
+            subTitle.setText(DateFormatter.getInterval(comment.created_at));
             SpannableString spannableString = RegularExpression.checkText(context, comment.text);
             text.setText(spannableString);
         }
