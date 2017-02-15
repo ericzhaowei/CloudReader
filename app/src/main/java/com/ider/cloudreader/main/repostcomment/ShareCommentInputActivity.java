@@ -1,7 +1,6 @@
-package com.ider.cloudreader.main;
+package com.ider.cloudreader.main.repostcomment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,7 +15,7 @@ import com.ider.cloudreader.R;
 import com.ider.cloudreader.views.EditorTopBar;
 import com.ider.cloudreader.weibo.comment.CommentPresenter;
 
-public class ShareCommentActivity extends Activity implements View.OnClickListener, ICommentView{
+public class ShareCommentInputActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = "ShareCommentActivity";
 
@@ -36,7 +35,6 @@ public class ShareCommentActivity extends Activity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        commentPresenter = new CommentPresenter(this);
         setContentView(R.layout.share_comment_editor_layout);
         statusId = getIntent().getStringExtra(STATUS_ID_KEY);
         Log.i(TAG, "onCreate: " + statusId);
@@ -92,14 +90,14 @@ public class ShareCommentActivity extends Activity implements View.OnClickListen
         topBar.setListener(new EditorTopBar.Listener() {
             @Override
             public void onCancel() {
-                ShareCommentActivity.this.finish();
+                ShareCommentInputActivity.this.finish();
             }
 
             @Override
             public void onSend() {
                 String text = editText.getText().toString();
                 if(text.length() > 140) {
-                    Toast.makeText(ShareCommentActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
+                    Toast.makeText(ShareCommentInputActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
                 } else {
                     commentPresenter.commitComment(text, statusId);
                 }
@@ -111,30 +109,11 @@ public class ShareCommentActivity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.compose_at:
-                Intent intent = new Intent(ShareCommentActivity.this, ContactsActivity.class);
+                Intent intent = new Intent(ShareCommentInputActivity.this, ContactsActivity.class);
                 startActivity(intent);
                 break;
         }
     }
 
 
-    @Override
-    public void commentSuccess(String comment) {
-
-    }
-
-    @Override
-    public void commentFailed(String message) {
-
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void committing() {
-
-    }
 }

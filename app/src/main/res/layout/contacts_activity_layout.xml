@@ -33,13 +33,13 @@
 
     <ListView
         android:id="@+id/contact_list"
-        android:divider="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:dividerHeight="0.3dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

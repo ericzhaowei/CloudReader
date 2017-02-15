@@ -1,4 +1,4 @@
-package com.ider.cloudreader.main;
+package com.ider.cloudreader.main.repostcomment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,13 +12,8 @@ import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
 import com.ider.cloudreader.common.SpellUtil;
 import com.sina.weibo.sdk.openapi.models.User;
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by ider-eric on 2017/2/14.
@@ -72,8 +67,13 @@ public class ContactAdapter extends BaseAdapter {
         String firstLetter = SpellUtil.getFirstLetter(name);
         if(firstLetter != null) {
             holder.firstLetter.setText(firstLetter);
+            if(i != 0) {
+                String lastFirstLetter = SpellUtil.getFirstLetter(contacts.get(i-1).name);
+                if(lastFirstLetter.equals(firstLetter)) {
+                    holder.firstLetter.setVisibility(View.GONE);
+                }
+            }
         }
-
         return view;
     }
 

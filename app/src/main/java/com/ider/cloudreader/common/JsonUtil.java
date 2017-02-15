@@ -2,6 +2,7 @@ package com.ider.cloudreader.common;
 
 import android.util.Log;
 
+import com.sina.weibo.sdk.openapi.models.Comment;
 import com.sina.weibo.sdk.openapi.models.User;
 
 import org.json.JSONArray;
@@ -33,6 +34,23 @@ public class JsonUtil {
             }
             return contactList;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ArrayList<Comment> parseComments(String s) {
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            ArrayList<Comment> comments = new ArrayList<>();
+            JSONArray array = jsonObject.getJSONArray("comments");
+            for(int i = 0; i < array.length(); i++) {
+                JSONObject object = array.getJSONObject(i);
+                Comment comment = Comment.parse(object);
+                comments.add(comment);
+            }
+            return comments;
         } catch (Exception e) {
             e.printStackTrace();
         }

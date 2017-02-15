@@ -21,9 +21,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".main.ShareCommentActivity"
+        <activity android:name=".main.repostcomment.ShareCommentInputActivity"
             android:theme="@style/BaseStyle"/>
-        <activity android:name=".main.ContactsActivity"
+        <activity android:name=".main.repostcomment.ContactsActivity"
+            android:theme="@style/BaseStyle"/>
+        <activity android:name=".main.repostcomment.CommentActivity"
             android:theme="@style/BaseStyle"/>
     </application>
 

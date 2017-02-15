@@ -45,7 +45,7 @@ public class UserFunctionAdapter extends RecyclerView.Adapter implements View.On
                 new UserNormal(R.drawable.messagescenter_comments, R.string.user_function_message_comments, 2),
                 new UserNormal(R.drawable.messagescenter_good, R.string.user_function_message_fabulous, 2),
                 new UserNormal(R.drawable.user_article, R.string.user_function_ariticle, 30),
-                new UserNormal(R.drawable.user_collection, R.string.user_function_collection, 3),
+                new UserNormal(R.drawable.user_collection, R.string.user_function_collection, 2),
                 new UserNormal(R.drawable.user_more, R.string.user_function_more, 30));
     }
 

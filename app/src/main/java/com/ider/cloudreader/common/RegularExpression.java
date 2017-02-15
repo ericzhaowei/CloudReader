@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class RegularExpression {
     private static final String TAG = "regex";
     
-    private static String AT = "@[\\u4e00-\\u9fa5\\w]+";
+    private static String AT = "@[\\u4e00-\\u9fa5\\w….]+";
     private static String TOPIC = "#[\\u4e00-\\u9fa5\\w]+#";
     private static String EMOJI = "\\[[\\u4e00-\\u9fa5\\w]+\\]";
     private static String URL = "http://([\\w-]+\\.)+([\\w./-?%&=]*)?";
@@ -35,7 +35,6 @@ public class RegularExpression {
 
     public static SpannableString checkText(Context context, String text) {
         SpannableString sp = new SpannableString(text);
-        Log.i(TAG, "checkText: " + REGEX);
         Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(text);
         while(matcher.find()) {

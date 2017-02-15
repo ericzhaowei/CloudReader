@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
 import com.ider.cloudreader.common.DateFormatter;
 import com.ider.cloudreader.common.RegularExpression;
+import com.ider.cloudreader.main.repostcomment.CommentActivity;
 import com.ider.cloudreader.views.ArticalDetailView;
 import com.ider.cloudreader.views.CircleHeaderImage;
 import com.ider.cloudreader.views.ImageGridView;
@@ -118,9 +118,8 @@ public class StatusAdapter extends RecyclerView.Adapter {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.status_item_comment_count:
-                    Intent intent = new Intent(context, ShareCommentActivity.class);
-                    intent.putExtra(ShareCommentActivity.TYPE_KEY, ShareCommentActivity.TYPE_COMMENT);
-                    intent.putExtra(ShareCommentActivity.STATUS_ID_KEY, status.id);
+                    Intent intent = new Intent(context, CommentActivity.class);
+                    intent.putExtra("status", new ParcelableStatus(status));
                     context.startActivity(intent);
                     break;
             }

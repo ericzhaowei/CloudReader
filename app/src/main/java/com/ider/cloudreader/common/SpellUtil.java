@@ -18,7 +18,7 @@ public class SpellUtil {
         StringBuilder sb = new StringBuilder();
         char[] chars = hanzi.toCharArray();
         HanyuPinyinOutputFormat pinyinOutputFormat = new HanyuPinyinOutputFormat();
-        pinyinOutputFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+        pinyinOutputFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
         pinyinOutputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         for (char aChar : chars) {
             if(aChar > 128) {
@@ -33,7 +33,7 @@ public class SpellUtil {
                 sb.append(aChar);
             }
         }
-        return sb.toString();
+        return sb.toString().toUpperCase();
     }
 
     public static String getFirstLetter(String hanzi) {
@@ -41,7 +41,7 @@ public class SpellUtil {
         char first = chars[0];
         if(first > 128) {
             HanyuPinyinOutputFormat pinyinOutputFormat = new HanyuPinyinOutputFormat();
-            pinyinOutputFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+            pinyinOutputFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
             pinyinOutputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
             try {
                 String strPinyin = PinyinHelper.toHanyuPinyinStringArray(chars[0], pinyinOutputFormat)[0];
@@ -50,7 +50,7 @@ public class SpellUtil {
                 badHanyuPinyinOutputFormatCombination.printStackTrace();
             }
         } else {
-            return String.valueOf(first);
+            return String.valueOf(first).toUpperCase();
         }
 
         return null;

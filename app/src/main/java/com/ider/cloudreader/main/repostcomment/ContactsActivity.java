@@ -1,7 +1,6 @@
-package com.ider.cloudreader.main;
+package com.ider.cloudreader.main.repostcomment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.ider.cloudreader.R;
 import com.ider.cloudreader.common.JsonUtil;
 import com.ider.cloudreader.common.LetterComparator;
 import com.ider.cloudreader.common.LogUtil;
-import com.ider.cloudreader.weibo.comment.CommentPresenter;
 import com.ider.cloudreader.weibo.user.AccessTokenKeeper;
 import com.ider.cloudreader.weibo.user.Constants;
 import com.ider.cloudreader.weibo.user.UserKeeper;

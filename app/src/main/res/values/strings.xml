@@ -37,6 +37,14 @@
     <string name="user_function_more">更多</string>
     <string name="user_function_setting">设置</string>
 
+    <string name="comment_title">微博评论</string>
+    <string name="comment_reposts_count">转发%d</string>
+    <string name="comment_comments_count">评论%d</string>
+    <string name="comment_liked_count">赞%d</string>
+    <string name="sort_by_hot">按热度</string>
+    <string name="sort_by_time">按时间</string>
+    
+    
     <string name="share_comment_editor_cancel">取消</string>
     <string name="share_comment_editor_send">发送</string>
     <string name="editor_type_comment">评论微博</string>
@@ -45,4 +53,5 @@
     <string name="comment_content_tolong">字数不能超过140个</string>
 
     <string name="contacts_title">联系人</string>
+    
 </resources>
