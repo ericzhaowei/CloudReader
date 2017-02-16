@@ -3,11 +3,14 @@ package com.ider.cloudreader.main;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ider.cloudreader.R;
@@ -25,41 +28,120 @@ import java.util.ArrayList;
  * Created by ider-eric on 2017/2/7.
  */
 
-public class StatusAdapter extends RecyclerView.Adapter {
+public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInterfaceHolder.AdapterInterface {
     private static final String TAG = "StatusAdapter";
-    
+
+    private static final int TYPE_NORMAL = 100;
+    private static final int TYPE_MORE = 101;
+    private boolean showError;
+    private int loadState = STATE_LOADING;
+
     private ArrayList<Status> statusList;
     private Context context;
+    private View.OnClickListener retryClickListener;
 
-    public StatusAdapter(Context context, ArrayList<Status> statusList) {
+    public StatusAdapter(Context context, ArrayList<Status> statusList, View.OnClickListener retryClickListener) {
         this.context = context;
         this.statusList = statusList;
+        this.retryClickListener = retryClickListener;
     }
 
     @Override
     public int getItemCount() {
-        return statusList.size();
+        // 尾部加载更多
+        return statusList.size() + 1;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        StatusHolder statusHolder = (StatusHolder) holder;
-        statusHolder.bindStatus(statusList.get(position));
+        if(holder instanceof StatusHolder) {
+            StatusHolder statusHolder = (StatusHolder) holder;
+            statusHolder.bindStatus(statusList.get(position));
+        } else if (holder instanceof LoadMoreHolder) {
+            ((LoadMoreHolder) holder).bind();
+
+        }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.status_item, parent, false);
-        return new StatusHolder(view);
+        if(viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(context).inflate(R.layout.status_item, parent, false);
+            return new StatusHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.status_load_more, parent, false);
+
+            return new LoadMoreHolder(view);
+        }
+
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if(position == statusList.size()) {
+            return TYPE_MORE;
+        }
+        return TYPE_NORMAL;
+    }
 
     public static class StatusDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            outRect.set(0, 30, 0, 0);
+            if(view != parent.getChildAt(parent.getChildCount()-1)) {
+                outRect.set(0, 30, 0, 0);
+            }
         }
     }
+
+    class LoadMoreHolder extends RecyclerView.ViewHolder implements LoadStateInterfaceHolder.HolderInterface {
+        private ImageView image;
+        private TextView text;
+        public LoadMoreHolder(View itemView) {
+            super(itemView);
+            image = (ImageView) itemView.findViewById(R.id.status_load_more_image);
+            text = (TextView) itemView.findViewById(R.id.status_load_more_text);
+        }
+
+        @Override
+        public void bind() {
+            switch (loadState) {
+                case STATE_LOADING:
+                    stateLoading();
+                    break;
+                case STATE_NOMORE:
+                    stateNoMore();
+                    break;
+                case STATE_ERROR:
+                    stateError();
+                    break;
+            }
+        }
+
+        @Override
+        public void stateNoMore() {
+            text.setText(R.string.status_load_no_more);
+            image.setVisibility(View.GONE);
+            text.setOnClickListener(null);
+        }
+
+        @Override
+        public void stateError() {
+            text.setText(R.string.status_load_retry);
+            image.setVisibility(View.GONE);
+            text.setOnClickListener(retryClickListener);
+        }
+
+        @Override
+        public void stateLoading() {
+            text.setText(R.string.status_loading);
+            image.setVisibility(View.VISIBLE);
+            ((AnimationDrawable)image.getDrawable()).start();
+            text.setOnClickListener(null);
+        }
+
+
+    }
+
 
     class StatusHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Status status;
@@ -126,4 +208,33 @@ public class StatusAdapter extends RecyclerView.Adapter {
         }
     }
 
+//    public void showBottomError() {
+//        showError = true;
+//        notifyDataSetChanged();
+//    }
+//
+//    public void showLoading() {
+//        showError = false;
+//        notifyDataSetChanged();
+//    }
+
+    @Override
+    public void loadMore() {
+        if(loadState != STATE_LOADING) {
+            loadState = STATE_LOADING;
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void noMoreItem() {
+        loadState = STATE_NOMORE;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void loadError() {
+        loadState = STATE_ERROR;
+        notifyDataSetChanged();
+    }
 }

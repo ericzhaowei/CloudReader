@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public interface ICommentView {
 
-    void committing();
-    void commentSuccess(String comment);
+    void showTopLoading();
+    void commentSuccess(Comment comment);
     void commentFailed(String message);
     Context getContext();
 
-    void requestSuccess(ArrayList<Comment> comments);
+    void requestSuccess(ArrayList<Comment> comments, int total);
     void requestFailed(String message);
 
 }

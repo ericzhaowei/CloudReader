@@ -17,13 +17,15 @@ import com.ider.cloudreader.main.MainPagerAdapter;
 import com.ider.cloudreader.main.ParcelableStatus;
 import com.sina.weibo.sdk.openapi.models.Status;
 
+import org.w3c.dom.Comment;
+
 import java.util.ArrayList;
 
 /**
  * Created by ider-eric on 2017/2/15.
  */
 
-public class CommentActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class CommentActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, View.OnClickListener, CommentFragment.CommentListener {
 
     private static final String TAG = "CommentActivity";
     private TextView vRepostCount, vCommentCount;
@@ -32,6 +34,7 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
     private ImageView vCountTab;
     private Status status;
     private ViewPager pager;
+    private CommentFragment commentFragment;
     private ArrayList<Fragment> fragments;
     private int repostWidth, commentWidth, tabWidth; // 转发数、评论数、tab的宽度
     private boolean measured; // 只计算一次的标记
@@ -92,7 +95,7 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
         fragments.add(repostFragment);
 
         // 评论
-        CommentFragment commentFragment = new CommentFragment();
+        commentFragment = new CommentFragment();
         // 传递status到commentFragment
         Bundle bundle = new Bundle();
         bundle.putParcelable("status", new ParcelableStatus(status));
@@ -111,6 +114,7 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
         vRepost.setOnClickListener(this);
         vComment.setOnClickListener(this);
         vLike.setOnClickListener(this);
+        commentFragment.setCommentListener(this);
     }
 
     public void back(View view) {
@@ -167,8 +171,24 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
             Intent intent = new Intent(this, ShareCommentInputActivity.class);
             intent.putExtra(ShareCommentInputActivity.TYPE_KEY, ShareCommentInputActivity.TYPE_COMMENT);
             intent.putExtra(ShareCommentInputActivity.STATUS_ID_KEY, status.id);
-            startActivity(intent);
+            startActivityForResult(intent, 100);
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 100) {
+            if(resultCode == 100) {
+                String commentText = data.getStringExtra("text");
+                CommentFragment commentFragment = (CommentFragment) fragments.get(1);
+                commentFragment.commitComment(commentText);
+            }
+        }
+    }
+
+    @Override
+    public void onCommentSuccess() {
+        status.comments_count += 1;
+        vCommentCount.setText(String.format(getString(R.string.comment_comments_count), status.comments_count));
     }
 }

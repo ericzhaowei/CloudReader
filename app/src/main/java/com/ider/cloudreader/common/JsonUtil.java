@@ -56,5 +56,20 @@ public class JsonUtil {
         }
         return null;
     }
+    public static int[] parseCommentPageInfo(String s) {
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+            int[] info = new int[3];
+            info[0] = jsonObject.getInt("previous_cursor");
+            info[1] = jsonObject.getInt("next_cursor");
+            info[2] = jsonObject.getInt("total_number");
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+
+    }
 
 }

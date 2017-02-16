@@ -7,10 +7,12 @@ import android.util.Log;
  */
 
 public class LogUtil {
+
+    private static int MAX = 1000;
     //log4k问题
     public static void log(String tag, String str) {
         int index = 0; // 当前位置
-        int max = 1000;// 需要截取的最大长度,别用4000
+        int max = MAX;// 需要截取的最大长度,别用4000
         String sub;    // 进行截取操作的string
         while (index < str.length()) {
             if (str.length() < max) { // 如果长度比最大长度小
@@ -21,7 +23,7 @@ public class LogUtil {
             }
             Log.i(tag, sub);         // 进行输出
             index = max;
-            max += 1000;
+            max += MAX;
         }
     }
 }

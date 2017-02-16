@@ -9,5 +9,7 @@ import java.util.ArrayList;
  */
 
 public interface IStatusView {
-    void displayLatestStatus(ArrayList<Status> statusList);
+    void displayLatestStatus(ArrayList<Status> statusList, boolean append);
+    void loadError();
+    void loadNoMore();
 }

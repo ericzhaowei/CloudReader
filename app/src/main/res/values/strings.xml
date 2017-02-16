@@ -43,7 +43,10 @@
     <string name="comment_liked_count">赞%d</string>
     <string name="sort_by_hot">按热度</string>
     <string name="sort_by_time">按时间</string>
-    
+    <string name="status_loading">加载中…</string>
+    <string name="status_load_no_more">没有更多微博</string>
+    <string name="status_load_retry">点击重试</string>
+    <string name="comment_no_more_comment">没有更多评论</string>
     
     <string name="share_comment_editor_cancel">取消</string>
     <string name="share_comment_editor_send">发送</string>

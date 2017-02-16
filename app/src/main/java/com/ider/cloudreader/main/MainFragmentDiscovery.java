@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  * Created by ider-eric on 2017/1/12.
  */
 
-public class MainFragmentDiscovery extends Fragment implements IStatusView {
+public class MainFragmentDiscovery extends Fragment implements IStatusView, View.OnClickListener {
 
     private static final String TAG = "MainFragmentDiscovery";
 
@@ -48,36 +49,79 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView {
             welcomeImage = (ImageView) rootView.findViewById(R.id.discovery_welcome);
             contentView = (RecyclerView) rootView.findViewById(R.id.discovery_content);
             setupRecyclerView();
-            refreshStatues(null);
         }
         return rootView;
     }
 
     private void setupRecyclerView() {
         StatusAdapter.StatusDecoration decoration = new StatusAdapter.StatusDecoration();
-        adapter = new StatusAdapter(getActivity(), statusList);
+        adapter = new StatusAdapter(getActivity(), statusList, this);
         contentView.setLayoutManager(new LinearLayoutManager(getActivity()));
         contentView.addItemDecoration(decoration);
         contentView.setAdapter(adapter);
+        contentView.setOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                    if(lastVisiblePosition == statusList.size() && !presenter.isLoading() && statusList.size() != 0) {
+                        long lastId = Long.valueOf(statusList.get(statusList.size()-1).id);
+                        refreshStatues(null, true, lastId-1);
+                    }
+                }
+            }
+        });
     }
 
-    public void refreshStatues(Oauth2AccessToken accessToken) {
+    public void refreshStatues(Oauth2AccessToken accessToken, boolean append, long maxId) {
+
         if(presenter != null) {
-            presenter.requestLatestStatues(accessToken);
+            presenter.refreshStatues(accessToken, append, maxId);
         }
     }
 
     @Override
-    public void displayLatestStatus(ArrayList<Status> latestList) {
+    public void displayLatestStatus(ArrayList<Status> latestList, boolean append) {
+
         if(welcomeImage.getVisibility() == View.VISIBLE) {
             welcomeImage.setVisibility(View.GONE);
         }
 
-        if(latestList.size() > 0) {
-            statusList.addAll(0, latestList);
+        if(!append) {
+            this.statusList = latestList;
+            adapter = new StatusAdapter(getActivity(), statusList, this);
+            contentView.setAdapter(adapter);
+        } else {
+            statusList.addAll(latestList);
+            adapter.notifyDataSetChanged();
         }
-        adapter.notifyDataSetChanged();
-
     }
 
+    @Override
+    public void loadError() {
+        adapter.loadError();
+    }
+
+    @Override
+    public void loadNoMore() {
+        adapter.noMoreItem();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.status_load_more_text:
+                long maxId = Long.parseLong(statusList.get(statusList.size()-1).id);
+                presenter.refreshStatues(null, true, maxId);
+                adapter.loadMore();
+                break;
+        }
+    }
 }

@@ -1,23 +1,27 @@
 package com.ider.cloudreader.main.repostcomment;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.common.RegularExpression;
 import com.ider.cloudreader.views.EditorTopBar;
-import com.ider.cloudreader.weibo.comment.CommentPresenter;
 
 public class ShareCommentInputActivity extends Activity implements View.OnClickListener {
 
-    private static final String TAG = "ShareCommentActivity";
+    private static final String TAG = "ShareCommentInputActivity";
 
     public static final String STATUS_ID_KEY = "status_id";
     public static final String TYPE_KEY = "type";
@@ -30,7 +34,6 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
     private TextView vSend;
 
 
-    private CommentPresenter commentPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,30 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
         composeMore.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "onResume: ");
+
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Service.INPUT_METHOD_SERVICE);
+                    inputMethodManager.showSoftInput(editText, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                    editText.setSelection(editText.getText().length());
+                }
+            });
+
+        }
+    }
+
     public void setupTopBar() {
         topBar = (EditorTopBar) findViewById(R.id.share_comment_editor_topbar);
         Intent intent = getIntent();
@@ -99,7 +126,10 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
                 if(text.length() > 140) {
                     Toast.makeText(ShareCommentInputActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
                 } else {
-                    commentPresenter.commitComment(text, statusId);
+                    Intent intent = new Intent();
+                    intent.putExtra("text", text);
+                    setResult(100, intent);
+                    ShareCommentInputActivity.this.finish();
                 }
             }
         });
@@ -110,10 +140,24 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
         switch (view.getId()) {
             case R.id.compose_at:
                 Intent intent = new Intent(ShareCommentInputActivity.this, ContactsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 100);
                 break;
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100) {
+            if(resultCode == 100) {
+                Log.i(TAG, "onActivityResult: ");
+                String username = data.getStringExtra("name");
+                String id = data.getStringExtra("id");
+                editText.append("@" + username + " ");
+                String text = editText.getText().toString();
+                SpannableString spannableString = RegularExpression.checkText(this, text);
+                editText.setText(spannableString);
+            }
+        }
+    }
 
 }

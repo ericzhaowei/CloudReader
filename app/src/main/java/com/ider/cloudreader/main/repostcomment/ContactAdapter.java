@@ -71,6 +71,8 @@ public class ContactAdapter extends BaseAdapter {
                 String lastFirstLetter = SpellUtil.getFirstLetter(contacts.get(i-1).name);
                 if(lastFirstLetter.equals(firstLetter)) {
                     holder.firstLetter.setVisibility(View.GONE);
+                } else {
+                    holder.firstLetter.setVisibility(View.VISIBLE);
                 }
             }
         }

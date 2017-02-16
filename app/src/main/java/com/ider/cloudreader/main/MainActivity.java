@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     public void showUser(User user, Oauth2AccessToken accessToken) {
         navigationAdapter.showUser(user);
         fragmentUser.showUser(user);
-        fragmentDiscovery.refreshStatues(accessToken);
+        fragmentDiscovery.refreshStatues(accessToken, false, 0L);
     }
 
 

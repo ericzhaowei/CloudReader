@@ -44,9 +44,8 @@ public class LoginPresenter {
 
         mAccessToken = AccessTokenKeeper.readAccessToken(activity);
         if(!mAccessToken.getUid().isEmpty() && mAccessToken.getExpiresTime() > System.currentTimeMillis()) {
-            if(!checkExistUser()) {
-                UserApi.getInstance(activity.getApplicationContext()).getUser(userListener);
-            }
+            checkExistUser();
+            UserApi.getInstance(activity.getApplicationContext()).getUser(userListener);
 
             // 剩余一天之内刷新期限
             if(mAccessToken.getExpiresTime() - System.currentTimeMillis() < 86400000) {

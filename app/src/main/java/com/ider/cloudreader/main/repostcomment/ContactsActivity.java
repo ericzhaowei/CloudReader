@@ -1,9 +1,11 @@
 package com.ider.cloudreader.main.repostcomment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import com.ider.cloudreader.R;
@@ -26,7 +28,7 @@ import java.util.Collections;
  * Created by ider-eric on 2017/2/13.
  */
 
-public class ContactsActivity extends Activity {
+public class ContactsActivity extends Activity implements AdapterView.OnItemClickListener{
     private static final String TAG = "ContactsActivity";
 
     private ImageView vBack;
@@ -50,6 +52,8 @@ public class ContactsActivity extends Activity {
         });
         vContacts = (ListView) findViewById(R.id.contact_list);
         setupList();
+
+        vContacts.setOnItemClickListener(this);
     }
 
     private void setupList() {
@@ -82,4 +86,14 @@ public class ContactsActivity extends Activity {
         }
     };
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        User user = contacts.get(i);
+        Intent intent = new Intent();
+        intent.putExtra("name", user.name);
+        intent.putExtra("id", user.id);
+        setResult(100, intent);
+        this.finish();
+
+    }
 }

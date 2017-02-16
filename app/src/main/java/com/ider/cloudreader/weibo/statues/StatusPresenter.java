@@ -29,6 +29,8 @@ public class StatusPresenter {
     private StatusesAPI mStatuesApi;
 
     private IStatusView iStatusView;
+    private boolean loading;
+    private boolean append; // statusList追加或者是更新
 
     public StatusPresenter(Context context, IStatusView iStatusView) {
         this.context = context;
@@ -41,29 +43,43 @@ public class StatusPresenter {
      *
      * @param accessToken 为null时，读取本地accessToken
      */
-    public void requestLatestStatues(Oauth2AccessToken accessToken) {
+    public void refreshStatues(Oauth2AccessToken accessToken, boolean append, long maxId) {
+        loading = true;
         if (accessToken != null && accessToken.isSessionValid()) {
             this.mAccessToken = accessToken;
         } else {
             mAccessToken = AccessTokenKeeper.readAccessToken(context);
         }
         mStatuesApi = new StatusesAPI(context, Constants.APP_KEY, mAccessToken);
-        mStatuesApi.friendsTimeline(0L, 0L, 10, 1, false, 0, false, mListener);
+        this.append = append;
+        mStatuesApi.friendsTimeline(0L, maxId, 10, 1, false, 0, false, mListener);
     }
+
 
     private RequestListener mListener = new RequestListener() {
         @Override
         public void onComplete(String response) {
-            Log.i(TAG, "onComplete: \n" + response);
+            Log.i(TAG, "onComplete: " + response);
             StatusList statuses = StatusList.parse(response);
             ArrayList<Status> statusList = statuses.statusList;
-            iStatusView.displayLatestStatus(statusList);
+            if(statusList != null) {
+                iStatusView.displayLatestStatus(statusList, append);
+            } else {
+                iStatusView.loadNoMore();
+            }
+            loading = false;
         }
 
         @Override
         public void onWeiboException(WeiboException e) {
             Log.i(TAG, "onWeiboException: " + e.getMessage());
+            loading = false;
+            iStatusView.loadError();
         }
     };
+
+    public boolean isLoading() {
+        return loading;
+    }
 
 }
