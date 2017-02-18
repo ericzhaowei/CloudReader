@@ -159,6 +159,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
         private ArticalDetailView shareDetail, commentDetail, likeDetail;
         private ImageGridView imageGrid;
         private RetweetStatusView retweetStatusView;
+        private ImageGridView repostImageGrid;
 
         public StatusHolder(View itemView) {
             super(itemView);
@@ -171,6 +172,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
             this.likeDetail = (ArticalDetailView) itemView.findViewById(R.id.status_item_like_count);
             this.imageGrid = (ImageGridView) itemView.findViewById(R.id.status_item_image_grid);
             this.retweetStatusView = (RetweetStatusView) itemView.findViewById(R.id.status_item_retweeted_status);
+            repostImageGrid = (ImageGridView) this.retweetStatusView.findViewById(R.id.retweet_status_image_grid);
             setListener();
         }
 
@@ -202,6 +204,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
             this.commentDetail.setOnClickListener(this);
             this.likeDetail.setOnClickListener(this);
             this.imageGrid.setOnItemClickListener(this);
+            this.repostImageGrid.setOnItemClickListener(this);
         }
 
         @Override
@@ -237,11 +240,27 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
 
         @Override
         public void onItemImageClick(View view) {
-            if(status.original_pic != null) {
+
+            String picUrl;
+
+            ImageGridView gridView = (ImageGridView) view.getParent();
+            switch (gridView.getId()) {
+                case R.id.status_item_image_grid:
+                    picUrl = status.original_pic;
+                    break;
+                case R.id.retweet_status_image_grid:
+                    picUrl = status.retweeted_status.original_pic;
+                    break;
+                default:
+                    picUrl = null;
+                    break;
+            }
+            if(picUrl != null) {
                 Intent intent = new Intent(context, ImageActivity.class);
-                intent.putExtra("image", status.original_pic);
+                intent.putExtra("image", picUrl);
                 context.startActivity(intent);
             }
+
         }
     }
 

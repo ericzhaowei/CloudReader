@@ -1,7 +1,9 @@
 package com.ider.cloudreader.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -46,7 +48,7 @@ public class RegularExpression {
 
                 String group = matcher.group(i);
                 if(group != null) {
-                    sp.setSpan(new ClickSpan(i), matcher.start(i), matcher.end(i), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    sp.setSpan(new ClickSpan(context, group, i), matcher.start(i), matcher.end(i), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
             }
 
@@ -65,15 +67,35 @@ public class RegularExpression {
     static class ClickSpan extends ClickableSpan {
 
         private int type;
+        private String text;
+        private Context context;
 
-        public ClickSpan(int type) {
+        public ClickSpan(Context context, String text, int type) {
             super();
             this.type = type;
+            this.text = text;
+            this.context = context;
         }
 
         @Override
         public void onClick(View view) {
+            switch (type) {
+                case 1:
 
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                case 4:
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(text));
+                    context.startActivity(intent);
+                    break;
+            }
             Toast.makeText(view.getContext(), "点击" + type, Toast.LENGTH_SHORT).show();
         }
 
