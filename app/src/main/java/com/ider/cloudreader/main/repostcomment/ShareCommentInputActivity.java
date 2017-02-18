@@ -27,6 +27,12 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
     public static final String TYPE_KEY = "type";
     public static final int TYPE_COMMENT = 0;
     public static final int TYPE_SHARE = 1;
+
+    public static final int COMMENT_REQUEST_CODE = 100;
+    public static final int REPOST_REQUEST_CODE = 101;
+    public static final int RESULT_OK = 1000;
+
+    public int type;
     private String statusId;
     private EditorTopBar topBar;
     private ImageView composePic, composeAt, composeGif, composeEmoji, composeMore;
@@ -40,8 +46,6 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.share_comment_editor_layout);
         statusId = getIntent().getStringExtra(STATUS_ID_KEY);
-        Log.i(TAG, "onCreate: " + statusId);
-        setupTopBar();
 
         vSend = (TextView) findViewById(R.id.share_comment_editor_send);
         editText = (EditText) findViewById(R.id.share_comment_edittext);
@@ -56,13 +60,17 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(editable.length() > 0) {
-                    vSend.setEnabled(true);
-                } else {
-                    vSend.setEnabled(false);
+                if(type == TYPE_COMMENT) {
+                    if (editable.length() > 0) {
+                        vSend.setEnabled(true);
+                    } else {
+                        vSend.setEnabled(false);
+                    }
                 }
             }
         });
+
+        setupTopBar();
         composePic = (ImageView) findViewById(R.id.compose_picture);
         composeAt = (ImageView) findViewById(R.id.compose_at);
         composeGif = (ImageView) findViewById(R.id.compose_gif);
@@ -102,12 +110,15 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
     public void setupTopBar() {
         topBar = (EditorTopBar) findViewById(R.id.share_comment_editor_topbar);
         Intent intent = getIntent();
-        int type = intent.getIntExtra(TYPE_KEY, -1);
+        type = intent.getIntExtra(TYPE_KEY, -1);
         String title;
         if(type == TYPE_COMMENT) {
             title = getString(R.string.editor_type_comment);
+            editText.setHint(R.string.editor_hint_comment);
         } else if(type == TYPE_SHARE) {
             title = getString(R.string.editor_type_share);
+            editText.setHint(R.string.editor_hint_repost);
+            vSend.setEnabled(true);
         } else {
             this.finish();
             return;
@@ -123,16 +134,25 @@ public class ShareCommentInputActivity extends Activity implements View.OnClickL
             @Override
             public void onSend() {
                 String text = editText.getText().toString();
-                if(text.length() > 140) {
-                    Toast.makeText(ShareCommentInputActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
-                } else {
+                if(type == TYPE_COMMENT) {
+                    if (text.length() > 140) {
+                        Toast.makeText(ShareCommentInputActivity.this, R.string.comment_content_tolong, Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.putExtra("text", text);
+                        setResult(100, intent);
+                        ShareCommentInputActivity.this.finish();
+                    }
+                } else if (type == TYPE_SHARE) {
                     Intent intent = new Intent();
                     intent.putExtra("text", text);
-                    setResult(100, intent);
+                    intent.putExtra("statusId", statusId);
+                    setResult(RESULT_OK, intent);
                     ShareCommentInputActivity.this.finish();
                 }
             }
         });
+
     }
 
     @Override

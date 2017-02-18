@@ -22,11 +22,16 @@
         </activity>
 
         <activity android:name=".main.repostcomment.ShareCommentInputActivity"
-            android:theme="@style/BaseStyle"/>
+            android:theme="@style/WhiteStyle"/>
         <activity android:name=".main.repostcomment.ContactsActivity"
-            android:theme="@style/BaseStyle"/>
+            android:theme="@style/WhiteStyle"/>
         <activity android:name=".main.repostcomment.CommentActivity"
-            android:theme="@style/BaseStyle"/>
+            android:theme="@style/WhiteStyle"/>
+
+        <activity android:name=".main.userinfo.UserInfoActivity" />
+
+        <activity android:name=".main.ImageActivity"/>
+
     </application>
 
 </manifest>

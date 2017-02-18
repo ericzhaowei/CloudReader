@@ -5,11 +5,15 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.common.CountFormatter;
 
 /**
  * Created by ider-eric on 2017/2/8.
@@ -18,8 +22,10 @@ import com.ider.cloudreader.R;
 public class ArticalDetailView extends LinearLayout{
 
     private boolean animEnable;
+    private boolean on;
     private ImageView iconView;
     private TextView countView;
+    private int count;
     private int type;
     private static final int TYPE_COMMENT = 1;
     private static final int TYPE_SHARE = 2;
@@ -64,11 +70,28 @@ public class ArticalDetailView extends LinearLayout{
     }
 
     public void setCount(int count) {
+        this.count = count;
         if(count == 0) {
             countView.setText(detailText);
         } else {
-            countView.setText(String.valueOf(count));
+            countView.setText(CountFormatter.formatCount(count));
         }
+    }
+
+
+    public void startOnAnim() {
+        if(on) {
+            iconView.setImageResource(R.drawable.artical_detail_icon_like);
+            on = false;
+            setCount(count - 1);
+        } else {
+            iconView.setImageResource(R.drawable.artical_detail_icon_liked);
+            on = true;
+            setCount(count + 1);
+        }
+        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.artical_like_anim);
+        iconView.startAnimation(animation);
+
 
     }
 

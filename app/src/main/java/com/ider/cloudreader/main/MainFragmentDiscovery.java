@@ -1,8 +1,10 @@
 package com.ider.cloudreader.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
@@ -23,13 +25,14 @@ import java.util.ArrayList;
  * Created by ider-eric on 2017/1/12.
  */
 
-public class MainFragmentDiscovery extends Fragment implements IStatusView, View.OnClickListener {
+public class MainFragmentDiscovery extends Fragment implements IStatusView, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MainFragmentDiscovery";
 
     private View rootView;
     private StatusPresenter presenter;
     private ImageView welcomeImage;
+    private SwipeRefreshLayout refreshContainer;
     private RecyclerView contentView;
     private StatusAdapter adapter;
     private ArrayList<Status> statusList;
@@ -47,10 +50,18 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView, View
         if(rootView == null) {
             rootView = LayoutInflater.from(getActivity()).inflate(R.layout.mainfragment_discovery, container, false);
             welcomeImage = (ImageView) rootView.findViewById(R.id.discovery_welcome);
+            refreshContainer = (SwipeRefreshLayout) rootView.findViewById(R.id.discovery_refresh_container);
+            refreshContainer.setOnRefreshListener(this);
+            refreshContainer.setRefreshing(true);
             contentView = (RecyclerView) rootView.findViewById(R.id.discovery_content);
             setupRecyclerView();
         }
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void setupRecyclerView() {
@@ -81,7 +92,6 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView, View
     }
 
     public void refreshStatues(Oauth2AccessToken accessToken, boolean append, long maxId) {
-
         if(presenter != null) {
             presenter.refreshStatues(accessToken, append, maxId);
         }
@@ -89,6 +99,9 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView, View
 
     @Override
     public void displayLatestStatus(ArrayList<Status> latestList, boolean append) {
+        if(refreshContainer.isRefreshing()) {
+            refreshContainer.setRefreshing(false);
+        }
 
         if(welcomeImage.getVisibility() == View.VISIBLE) {
             welcomeImage.setVisibility(View.GONE);
@@ -106,12 +119,12 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView, View
 
     @Override
     public void loadError() {
-        adapter.loadError();
+        adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_ERROR);
     }
 
     @Override
     public void loadNoMore() {
-        adapter.noMoreItem();
+        adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_NOMORE);
     }
 
     @Override
@@ -120,8 +133,20 @@ public class MainFragmentDiscovery extends Fragment implements IStatusView, View
             case R.id.status_load_more_text:
                 long maxId = Long.parseLong(statusList.get(statusList.size()-1).id);
                 presenter.refreshStatues(null, true, maxId);
-                adapter.loadMore();
+                adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_LOADING);
                 break;
         }
     }
+
+    @Override
+    public void onRefresh() {
+        refreshStatues(null, false, 0);
+    }
+
+
+    public void addToFirst(Status status) {
+        statusList.add(0, status);
+        adapter.notifyDataSetChanged();
+    }
+
 }

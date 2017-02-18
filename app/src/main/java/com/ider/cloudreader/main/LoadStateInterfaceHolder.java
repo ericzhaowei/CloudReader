@@ -7,13 +7,11 @@ package com.ider.cloudreader.main;
 public class LoadStateInterfaceHolder {
 
     public static interface AdapterInterface {
-        public static final int STATE_LOADING = 1000;
-        public static final int STATE_ERROR = 1001;
-        public static final int STATE_NOMORE = 1002;
+        int STATE_LOADING = 1000;
+        int STATE_ERROR = 1001;
+        int STATE_NOMORE = 1002;
 
-        void loadMore();
-        void noMoreItem();
-        void loadError();
+        void setLoadingState(int loadingState);
     }
 
     public static interface HolderInterface {

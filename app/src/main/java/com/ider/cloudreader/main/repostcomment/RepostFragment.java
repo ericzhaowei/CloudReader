@@ -6,8 +6,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ider.cloudreader.R;
+import com.sina.weibo.sdk.openapi.models.Comment;
+
+import java.util.ArrayList;
 
 /**
  * Created by ider-eric on 2017/2/15.
@@ -26,4 +30,5 @@ public class RepostFragment extends Fragment {
         View view = inflater.inflate(R.layout.repost_list_fragment, container, false);
         return view;
     }
+
 }

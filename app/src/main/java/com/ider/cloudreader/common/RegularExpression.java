@@ -43,6 +43,7 @@ public class RegularExpression {
                 if(i == 3) {
                     continue;
                 }
+
                 String group = matcher.group(i);
                 if(group != null) {
                     sp.setSpan(new ClickSpan(i), matcher.start(i), matcher.end(i), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

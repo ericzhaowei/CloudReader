@@ -1,12 +1,14 @@
 package com.ider.cloudreader.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,24 +16,28 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.main.repostcomment.ICommentView;
+import com.ider.cloudreader.main.repostcomment.IRepostView;
+import com.ider.cloudreader.main.repostcomment.RepostPresenter;
+import com.ider.cloudreader.main.repostcomment.ShareCommentInputActivity;
 import com.ider.cloudreader.navigation.NavigationAdapter;
 import com.ider.cloudreader.toolbar.MainTabHolder;
 import com.ider.cloudreader.toolbar.OnTabItemClickListener;
 import com.ider.cloudreader.weibo.user.LoginPresenter;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.openapi.models.Comment;
+import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.User;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener, ILoginView {
+public class MainActivity extends AppCompatActivity implements NavigationAdapter.OnItemClickListener, ILoginView, IRepostView {
     private static final String TAG = "MainActivity";
 
     private static final int FRAGMENT_MAX = 3;
@@ -42,12 +48,12 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     private MainFragmentMusic fragmentMusic;
     private MainFragmentUser fragmentUser;
     private LoginPresenter loginPresenter;
+    private RepostPresenter repostPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         loginPresenter = new LoginPresenter(this);
 
         setupToolBar();
@@ -178,8 +184,43 @@ public class MainActivity extends AppCompatActivity implements NavigationAdapter
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         loginPresenter.onAuthorizeCallback(requestCode, resultCode, data);
+        if(requestCode == ShareCommentInputActivity.REPOST_REQUEST_CODE) {
+            if(resultCode == ShareCommentInputActivity.RESULT_OK) {
+                if(repostPresenter == null) {
+                    repostPresenter = new RepostPresenter(MainActivity.this);
+                }
+                String statusId = data.getStringExtra("statusId");
+                String text = data.getStringExtra("text");
+                repostPresenter.repostStatus(statusId, text);
+            }
+        }
     }
 
+    @Override
+    public void reposting() {
+        Toast.makeText(this, "正在发送", Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void repostSuccess(String s) {
+        Toast.makeText(this, "发送成功", Toast.LENGTH_LONG).show();
+        try {
+            JSONObject json = new JSONObject(s);
+            Status status = Status.parse(json);
+            fragmentDiscovery.addToFirst(status);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public void repostFailed(String message) {
+        Log.i(TAG, "repostFailed: " + message);
+        Toast.makeText(this, "发送失败", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 }

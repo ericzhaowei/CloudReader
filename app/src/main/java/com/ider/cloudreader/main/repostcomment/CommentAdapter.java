@@ -33,7 +33,7 @@ public class CommentAdapter extends RecyclerView.Adapter implements LoadStateInt
     private static final int TYPE_NORMAL = 100;
     private static final int TYPE_MORE = 101;
 
-    private int loadState = STATE_LOADING;
+    private int loadState = STATE_NOMORE;
     private View.OnClickListener retryListener;
 
     public CommentAdapter(Context context, ArrayList<Comment> commentList, View.OnClickListener retryListener) {
@@ -159,25 +159,10 @@ public class CommentAdapter extends RecyclerView.Adapter implements LoadStateInt
         }
     }
 
+
     @Override
-    public void noMoreItem() {
-        loadState = STATE_NOMORE;
+    public void setLoadingState(int loadState) {
+        this.loadState = loadState;
         notifyDataSetChanged();
     }
-
-    @Override
-    public void loadError() {
-        this.loadState = STATE_ERROR;
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public void loadMore() {
-        if(this.loadState != STATE_LOADING) {
-            this.loadState = STATE_LOADING;
-            notifyDataSetChanged();
-        }
-    }
-
-
 }

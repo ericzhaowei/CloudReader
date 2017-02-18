@@ -1,24 +1,19 @@
 package com.ider.cloudreader.main.repostcomment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.common.CountFormatter;
 import com.ider.cloudreader.main.MainPagerAdapter;
 import com.ider.cloudreader.main.ParcelableStatus;
 import com.sina.weibo.sdk.openapi.models.Status;
-
-import org.w3c.dom.Comment;
-
 import java.util.ArrayList;
 
 /**
@@ -82,9 +77,9 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
         vRepostCount = (TextView) findViewById(R.id.status_comment_reweeted_count);
         vCommentCount = (TextView) findViewById(R.id.status_comment_comment_count);
         vLikeCount = (TextView) findViewById(R.id.status_comment_liked_count);
-        vRepostCount.setText(String.format(getString(R.string.comment_reposts_count), status.reposts_count));
-        vCommentCount.setText(String.format(getString(R.string.comment_comments_count), status.comments_count));
-        vLikeCount.setText(String.format(getString(R.string.comment_liked_count), status.attitudes_count));
+        vRepostCount.setText(String.format(getString(R.string.comment_reposts_count), CountFormatter.formatCount(status.reposts_count)));
+        vCommentCount.setText(String.format(getString(R.string.comment_comments_count), CountFormatter.formatCount(status.comments_count)));
+        vLikeCount.setText(String.format(getString(R.string.comment_liked_count), CountFormatter.formatCount(status.attitudes_count)));
         vRepost = (TextView) findViewById(R.id.comment_bottom_repost);
         vComment = (TextView) findViewById(R.id.comment_bottom_comment);
         vLike = (TextView) findViewById(R.id.comment_bottom_like);
@@ -189,6 +184,6 @@ public class CommentActivity extends AppCompatActivity implements ViewPager.OnPa
     @Override
     public void onCommentSuccess() {
         status.comments_count += 1;
-        vCommentCount.setText(String.format(getString(R.string.comment_comments_count), status.comments_count));
+        vCommentCount.setText(String.format(getString(R.string.comment_comments_count), CountFormatter.formatCount(status.comments_count)));
     }
 }

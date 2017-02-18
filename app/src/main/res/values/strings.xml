@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">云阅</string>
+    <string name="app_name">微看</string>
     <string name="nav_header_login_tip">登录网易云音乐\n320K高音质无限下载，手机电脑多端同步</string>
     <string name="nav_header_login">立即登录</string>
     <string name="nav_message">我的消息</string>
@@ -38,9 +38,9 @@
     <string name="user_function_setting">设置</string>
 
     <string name="comment_title">微博评论</string>
-    <string name="comment_reposts_count">转发%d</string>
-    <string name="comment_comments_count">评论%d</string>
-    <string name="comment_liked_count">赞%d</string>
+    <string name="comment_reposts_count">转发%s</string>
+    <string name="comment_comments_count">评论%s</string>
+    <string name="comment_liked_count">赞%s</string>
     <string name="sort_by_hot">按热度</string>
     <string name="sort_by_time">按时间</string>
     <string name="status_loading">加载中…</string>
@@ -52,9 +52,16 @@
     <string name="share_comment_editor_send">发送</string>
     <string name="editor_type_comment">评论微博</string>
     <string name="editor_type_share">转发微博</string>
-    <string name="editor_hint">写评论…</string>
+    <string name="editor_hint_comment">写评论…</string>
+    <string name="editor_hint_repost">说说你的分享心得…</string>
     <string name="comment_content_tolong">字数不能超过140个</string>
 
     <string name="contacts_title">联系人</string>
+
+    <string name="user_info_friends_count">关注%s</string>
+    <string name="user_info_followers_count">粉丝%s</string>
+    <string name="user_info_main">主页</string>
+    <string name="user_info_status">微博</string>
+    <string name="user_info_pictures">相册</string>
     
 </resources>

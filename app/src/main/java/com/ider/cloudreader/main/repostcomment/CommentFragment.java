@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ider.cloudreader.R;
+import com.ider.cloudreader.main.LoadStateInterfaceHolder;
 import com.ider.cloudreader.main.ParcelableStatus;
 import com.sina.weibo.sdk.openapi.models.Comment;
 import com.sina.weibo.sdk.openapi.models.Status;
@@ -91,6 +93,7 @@ public class CommentFragment extends Fragment implements ICommentView, View.OnCl
                     LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
                     if(lastVisiblePosition == comments.size() && !presenter.isLoading() && comments.size() != 0) {
+                        CommentFragment.this.adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_LOADING);
                         long maxId = Long.parseLong(comments.get(comments.size()-1).id);
                         presenter.getComments(status.id, maxId-1);
                     }
@@ -109,7 +112,7 @@ public class CommentFragment extends Fragment implements ICommentView, View.OnCl
     public void requestFailed(String message) {
         vLoading.setVisibility(View.GONE);
         if(this.adapter != null) {
-            this.adapter.loadError();
+            this.adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_ERROR);
         }
     }
 
@@ -124,13 +127,16 @@ public class CommentFragment extends Fragment implements ICommentView, View.OnCl
             this.comments = comments;
             this.adapter = new CommentAdapter(getContext(), comments, this);
             vComments.setAdapter(this.adapter);
+
+
         } else {
             this.comments.addAll(comments);
             this.adapter.notifyDataSetChanged();
             if(comments.size() == 0) {
-                adapter.noMoreItem();
+                this.adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_NOMORE);
             }
         }
+
 
     }
 
@@ -158,7 +164,7 @@ public class CommentFragment extends Fragment implements ICommentView, View.OnCl
         switch (view.getId()) {
             case R.id.status_load_more_text:
                 long maxId = Long.parseLong(comments.get(comments.size()-1).id);
-                adapter.loadMore();
+                adapter.setLoadingState(LoadStateInterfaceHolder.AdapterInterface.STATE_LOADING);
                 presenter.getComments(status.id, maxId-1);
                 break;
         }

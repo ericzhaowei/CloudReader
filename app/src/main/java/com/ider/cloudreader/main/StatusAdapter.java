@@ -1,5 +1,7 @@
 package com.ider.cloudreader.main;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -17,6 +19,8 @@ import com.ider.cloudreader.R;
 import com.ider.cloudreader.common.DateFormatter;
 import com.ider.cloudreader.common.RegularExpression;
 import com.ider.cloudreader.main.repostcomment.CommentActivity;
+import com.ider.cloudreader.main.repostcomment.ShareCommentInputActivity;
+import com.ider.cloudreader.main.userinfo.UserInfoActivity;
 import com.ider.cloudreader.views.ArticalDetailView;
 import com.ider.cloudreader.views.CircleHeaderImage;
 import com.ider.cloudreader.views.ImageGridView;
@@ -33,7 +37,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
 
     private static final int TYPE_NORMAL = 100;
     private static final int TYPE_MORE = 101;
-    private boolean showError;
+
     private int loadState = STATE_LOADING;
 
     private ArrayList<Status> statusList;
@@ -49,7 +53,11 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
     @Override
     public int getItemCount() {
         // 尾部加载更多
-        return statusList.size() + 1;
+        if(statusList.size() > 0) {
+            return statusList.size() + 1;
+        } else {
+            return statusList.size();
+        }
     }
 
     @Override
@@ -87,9 +95,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
     public static class StatusDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            if(view != parent.getChildAt(parent.getChildCount()-1)) {
-                outRect.set(0, 30, 0, 0);
-            }
+            outRect.set(0, 30, 0, 0);
         }
     }
 
@@ -143,7 +149,7 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
     }
 
 
-    class StatusHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class StatusHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ImageGridView.OnItemClickListener {
         private Status status;
 
         private CircleHeaderImage userIcon;
@@ -191,50 +197,59 @@ public class StatusAdapter extends RecyclerView.Adapter implements LoadStateInte
         }
 
         public void setListener() {
+            this.userIcon.setOnClickListener(this);
             this.shareDetail.setOnClickListener(this);
             this.commentDetail.setOnClickListener(this);
             this.likeDetail.setOnClickListener(this);
+            this.imageGrid.setOnItemClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            Intent intent;
             switch (view.getId()) {
                 case R.id.status_item_comment_count:
-                    Intent intent = new Intent(context, CommentActivity.class);
+                    intent = new Intent(context, CommentActivity.class);
                     intent.putExtra("status", new ParcelableStatus(status));
                     context.startActivity(intent);
                     break;
+                case R.id.status_item_share_count:
+                    intent = new Intent(context, ShareCommentInputActivity.class);
+                    intent.putExtra("status", new ParcelableStatus(status));
+                    intent.putExtra(ShareCommentInputActivity.STATUS_ID_KEY, status.id);
+                    intent.putExtra(ShareCommentInputActivity.TYPE_KEY, ShareCommentInputActivity.TYPE_SHARE);
+                    ((Activity)context).startActivityForResult(intent, ShareCommentInputActivity.REPOST_REQUEST_CODE);
+                    break;
+                case R.id.status_item_like_count:
+                    ArticalDetailView detailView = (ArticalDetailView) view;
+                    detailView.startOnAnim();
+                    break;
+
+                case R.id.status_item_user_logo:
+                    view.setTransitionName("icon");
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) context, view, "icon");
+                    intent = new Intent(context, UserInfoActivity.class);
+                    intent.putExtra("user", new ParcelableUser(status.user));
+                    context.startActivity(intent, options.toBundle());
+                    break;
+            }
+        }
+
+        @Override
+        public void onItemImageClick(View view) {
+            if(status.original_pic != null) {
+                Intent intent = new Intent(context, ImageActivity.class);
+                intent.putExtra("image", status.original_pic);
+                context.startActivity(intent);
             }
         }
     }
 
-//    public void showBottomError() {
-//        showError = true;
-//        notifyDataSetChanged();
-//    }
-//
-//    public void showLoading() {
-//        showError = false;
-//        notifyDataSetChanged();
-//    }
-
     @Override
-    public void loadMore() {
-        if(loadState != STATE_LOADING) {
-            loadState = STATE_LOADING;
-            notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void noMoreItem() {
-        loadState = STATE_NOMORE;
+    public void setLoadingState(int loadingState) {
+        StatusAdapter.this.loadState = loadingState;
         notifyDataSetChanged();
     }
 
-    @Override
-    public void loadError() {
-        loadState = STATE_ERROR;
-        notifyDataSetChanged();
-    }
+
 }

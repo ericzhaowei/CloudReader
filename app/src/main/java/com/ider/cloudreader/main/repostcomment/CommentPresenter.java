@@ -26,7 +26,6 @@ public class CommentPresenter {
 
     private static final String TAG = "CommentPresenter";
 
-    public static final int countPerPage = 50;
     private ICommentView commentView;
     private Context context;
     private boolean loading;
